@@ -62,6 +62,15 @@ public class ProductController {
                         size));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponseDto>>
+    searchProducts(
+            @RequestParam String name) {
+
+        return ResponseEntity.ok(
+                productService.searchProducts(name));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDto> updateProduct(
             @PathVariable Long id,

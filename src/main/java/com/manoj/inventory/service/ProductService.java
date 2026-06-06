@@ -19,6 +19,8 @@ public interface ProductService {
             int size
     );
 
+    List<ProductResponseDto> searchProducts(String name);
+
     ProductResponseDto updateProduct(Long id,
                                      ProductRequestDto dto);
 
