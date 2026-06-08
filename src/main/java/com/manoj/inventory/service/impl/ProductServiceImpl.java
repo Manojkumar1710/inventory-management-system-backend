@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,6 +113,35 @@ public class ProductServiceImpl implements ProductService {
 
         List<Product> products =
                 productRepository.findByNameContaining(name);
+
+        return products.stream()
+                .map(product -> {
+
+                    ProductResponseDto dto =
+                            new ProductResponseDto();
+
+                    dto.setId(product.getId());
+                    dto.setName(product.getName());
+                    dto.setDescription(product.getDescription());
+                    dto.setPrice(product.getPrice());
+                    dto.setQuantity(product.getQuantity());
+
+                    dto.setCategoryName(
+                            product.getCategory().getName());
+
+                    dto.setSupplierName(
+                            product.getSupplier().getName());
+
+                    return dto;
+
+                }).collect(Collectors.toList());
+    }
+    @Override
+    public List<ProductResponseDto> getProductsSorted(String sortBy) {
+
+        List<Product> products =
+                productRepository.findAll(
+                        Sort.by(sortBy));
 
         return products.stream()
                 .map(product -> {

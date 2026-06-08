@@ -71,6 +71,15 @@ public class ProductController {
                 productService.searchProducts(name));
     }
 
+    @GetMapping("/sort")
+    public ResponseEntity<List<ProductResponseDto>>
+    getProductsSorted(
+            @RequestParam String sortBy) {
+
+        return ResponseEntity.ok(
+                productService.getProductsSorted(sortBy));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDto> updateProduct(
             @PathVariable Long id,

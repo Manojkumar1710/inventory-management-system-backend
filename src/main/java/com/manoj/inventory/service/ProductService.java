@@ -21,6 +21,8 @@ public interface ProductService {
 
     List<ProductResponseDto> searchProducts(String name);
 
+    List<ProductResponseDto> getProductsSorted(String sortBy);
+
     ProductResponseDto updateProduct(Long id,
                                      ProductRequestDto dto);
 
