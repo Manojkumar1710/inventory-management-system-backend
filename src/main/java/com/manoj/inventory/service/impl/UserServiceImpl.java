@@ -8,6 +8,9 @@ import com.manoj.inventory.repository.UserRepository;
 import com.manoj.inventory.service.UserService;
 import org.springframework.stereotype.Service;
 
+// ADDED FOR BCrypt
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +19,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    // ADDED FOR BCrypt
+    private final PasswordEncoder passwordEncoder;
+
+    // UPDATED CONSTRUCTOR FOR BCrypt
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -27,7 +37,14 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+
+        // ADDED FOR BCrypt
+        user.setPassword(
+                passwordEncoder.encode(
+                        dto.getPassword()
+                )
+        );
+
         user.setRole(dto.getRole());
 
         User savedUser = userRepository.save(user);
@@ -80,7 +97,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto updateUser(Long id, UserRequestDto dto) {
+    public UserResponseDto updateUser(Long id,
+                                      UserRequestDto dto) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() ->
@@ -88,7 +106,14 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
+
+        // ADDED FOR BCrypt
+        user.setPassword(
+                passwordEncoder.encode(
+                        dto.getPassword()
+                )
+        );
+
         user.setRole(dto.getRole());
 
         User updatedUser = userRepository.save(user);
