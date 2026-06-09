@@ -165,7 +165,34 @@ public class ProductServiceImpl implements ProductService {
 
                 }).collect(Collectors.toList());
     }
+    @Override
+    public List<ProductResponseDto> getLowStockProducts() {
 
+        List<Product> products =
+                productRepository.findByQuantityLessThan(5);
+
+        return products.stream()
+                .map(product -> {
+
+                    ProductResponseDto dto =
+                            new ProductResponseDto();
+
+                    dto.setId(product.getId());
+                    dto.setName(product.getName());
+                    dto.setDescription(product.getDescription());
+                    dto.setPrice(product.getPrice());
+                    dto.setQuantity(product.getQuantity());
+
+                    dto.setCategoryName(
+                            product.getCategory().getName());
+
+                    dto.setSupplierName(
+                            product.getSupplier().getName());
+
+                    return dto;
+
+                }).collect(Collectors.toList());
+    }
     @Override
     public ProductResponseDto getProductById(Long id) {
 
@@ -191,7 +218,79 @@ public class ProductServiceImpl implements ProductService {
 
         return responseDto;
     }
+    @Override
+    public ProductResponseDto stockInProduct(
+            Long id,
+            Integer quantity) {
 
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Product not found"));
+
+        product.setQuantity(
+                product.getQuantity() + quantity);
+
+        Product updatedProduct =
+                productRepository.save(product);
+
+        ProductResponseDto dto =
+                new ProductResponseDto();
+
+        dto.setId(updatedProduct.getId());
+        dto.setName(updatedProduct.getName());
+        dto.setDescription(updatedProduct.getDescription());
+        dto.setPrice(updatedProduct.getPrice());
+        dto.setQuantity(updatedProduct.getQuantity());
+
+        dto.setCategoryName(
+                updatedProduct.getCategory().getName());
+
+        dto.setSupplierName(
+                updatedProduct.getSupplier().getName());
+
+        return dto;
+    }
+
+    @Override
+    public ProductResponseDto stockOutProduct(
+            Long id,
+            Integer quantity) {
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Product not found"));
+
+        if (product.getQuantity() < quantity) {
+
+            throw new RuntimeException(
+                    "Insufficient stock available");
+        }
+
+        product.setQuantity(
+                product.getQuantity() - quantity);
+
+        Product updatedProduct =
+                productRepository.save(product);
+
+        ProductResponseDto dto =
+                new ProductResponseDto();
+
+        dto.setId(updatedProduct.getId());
+        dto.setName(updatedProduct.getName());
+        dto.setDescription(updatedProduct.getDescription());
+        dto.setPrice(updatedProduct.getPrice());
+        dto.setQuantity(updatedProduct.getQuantity());
+
+        dto.setCategoryName(
+                updatedProduct.getCategory().getName());
+
+        dto.setSupplierName(
+                updatedProduct.getSupplier().getName());
+
+        return dto;
+    }
     @Override
     public List<ProductResponseDto> getAllProducts() {
 

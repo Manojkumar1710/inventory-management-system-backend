@@ -2,6 +2,7 @@ package com.manoj.inventory.controller;
 
 import com.manoj.inventory.dto.ProductRequestDto;
 import com.manoj.inventory.dto.ProductResponseDto;
+import com.manoj.inventory.dto.StockRequestDto;
 import com.manoj.inventory.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -78,6 +79,46 @@ public class ProductController {
 
         return ResponseEntity.ok(
                 productService.getProductsSorted(sortBy));
+    }
+
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<ProductResponseDto>>
+    getLowStockProducts() {
+
+        return ResponseEntity.ok(
+                productService.getLowStockProducts());
+    }
+
+    @PostMapping("/{id}/stock-in")
+    public ResponseEntity<ProductResponseDto>
+    stockInProduct(
+
+            @PathVariable Long id,
+
+            @RequestBody
+            StockRequestDto dto) {
+
+        return ResponseEntity.ok(
+                productService.stockInProduct(
+                        id,
+                        dto.getQuantity()));
+    }
+
+
+
+    @PostMapping("/{id}/stock-out")
+    public ResponseEntity<ProductResponseDto>
+    stockOutProduct(
+
+            @PathVariable Long id,
+
+            @RequestBody
+            StockRequestDto dto) {
+
+        return ResponseEntity.ok(
+                productService.stockOutProduct(
+                        id,
+                        dto.getQuantity()));
     }
 
     @PutMapping("/{id}")

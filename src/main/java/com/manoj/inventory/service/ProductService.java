@@ -19,6 +19,15 @@ public interface ProductService {
             int size
     );
 
+    List<ProductResponseDto> getLowStockProducts();
+
+    ProductResponseDto stockInProduct(
+            Long id,
+            Integer quantity);
+    ProductResponseDto stockOutProduct(
+            Long id,
+            Integer quantity);
+
     List<ProductResponseDto> searchProducts(String name);
 
     List<ProductResponseDto> getProductsSorted(String sortBy);
