@@ -8,6 +8,7 @@ import com.manoj.inventory.repository.SupplierRepository;
 import com.manoj.inventory.service.SupplierService;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 

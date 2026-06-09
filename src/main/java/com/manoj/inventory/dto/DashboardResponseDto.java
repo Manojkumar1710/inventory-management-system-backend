@@ -8,5 +8,6 @@ public class DashboardResponseDto {
     private Long totalProducts;
     private Long totalCategories;
     private Long totalSuppliers;
+    private Long totalUsers;
     private Long lowStockProducts;
 }

@@ -7,6 +7,7 @@ import com.manoj.inventory.repository.SupplierRepository;
 import com.manoj.inventory.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.manoj.inventory.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class DashboardServiceImpl
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SupplierRepository supplierRepository;
+    private final UserRepository userRepository;
 
     @Override
     public DashboardResponseDto getDashboard() {
@@ -31,6 +33,8 @@ public class DashboardServiceImpl
 
         dto.setTotalSuppliers(
                 supplierRepository.count());
+        dto.setTotalUsers(
+                userRepository.count());
 
         dto.setLowStockProducts(
                 (long) productRepository
