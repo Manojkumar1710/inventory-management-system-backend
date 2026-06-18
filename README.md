@@ -153,6 +153,13 @@ com.manoj.inventory
 ```
 
 ---
+## Environment Variables
+
+Configure the following variables before running:
+
+DB_URL
+DB_USERNAME
+DB_PASSWORD
 
 ## Future Enhancements
 
